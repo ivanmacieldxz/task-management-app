@@ -1,4 +1,4 @@
-package org.konge.taskmanagementapp.exception;
+package org.konge.taskmanagementapp.api.exception;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

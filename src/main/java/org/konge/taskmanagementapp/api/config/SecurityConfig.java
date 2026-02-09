@@ -1,4 +1,4 @@
-package org.konge.taskmanagementapp.config;
+package org.konge.taskmanagementapp.api.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,10 +13,13 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterchain(HttpSecurity http) throws Exception {
+        //CSRF disabled because it's not possible because of the absence of cookies
         http.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**")
+                        //auth resources and error messages are accessible without authentication
+                        .requestMatchers("/api/auth/**", "/error")
                         .permitAll()
+                        //all other requests require authentication
                         .anyRequest()
                         .authenticated()
                 );

@@ -1,10 +1,10 @@
-package org.konge.taskmanagementapp.controller;
+package org.konge.taskmanagementapp.api.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.konge.taskmanagementapp.api.dto.UserRegistrationDTO;
 import org.konge.taskmanagementapp.api.model.User;
-import org.konge.taskmanagementapp.service.UserService;
+import org.konge.taskmanagementapp.api.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

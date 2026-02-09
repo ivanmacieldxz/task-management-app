@@ -1,4 +1,4 @@
-package org.konge.taskmanagementapp.service;
+package org.konge.taskmanagementapp.api.service;
 
 import lombok.RequiredArgsConstructor;
 import org.konge.taskmanagementapp.api.dto.UserRegistrationDTO;
