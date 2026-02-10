@@ -47,4 +47,24 @@ public class UserService {
                 user.getEmail()
         );
     }
+
+    public AuthResponseDTO login(LoginRequestDTO loginRequestDTO) {
+        User user = userRepository
+                .findByEmail(loginRequestDTO.identifier())
+                .or(() -> userRepository.findByUsername(loginRequestDTO.identifier()))
+                .orElseThrow(() -> new RuntimeException("Login rejected: user not found."));
+
+        boolean requestPasswordMatchesUserPassword = passwordEncoder
+                .matches(
+                        loginRequestDTO.password(),
+                        user.getPassword()
+                );
+
+        if (!requestPasswordMatchesUserPassword)
+            throw new RuntimeException("Login rejected: wrong password.");
+
+        String token = jwtService.generateToken(user.getEmail());
+
+        return new AuthResponseDTO(token);
+    }
 }
