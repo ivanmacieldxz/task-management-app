@@ -2,7 +2,9 @@ package org.konge.taskmanagementapp.api.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.konge.taskmanagementapp.api.dto.AuthResponseDTO;
 import org.konge.taskmanagementapp.api.dto.UserRegistrationDTO;
+import org.konge.taskmanagementapp.api.dto.UserResponseDTO;
 import org.konge.taskmanagementapp.api.model.User;
 import org.konge.taskmanagementapp.api.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -20,10 +22,10 @@ public class AuthController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@Valid @RequestBody UserRegistrationDTO dto) {
-        User registeredNewUser = userService.registerUser(dto);
+    public ResponseEntity<UserResponseDTO> registerUser(@Valid @RequestBody UserRegistrationDTO dto) {
+        UserResponseDTO registeredUserResponseDTO = userService.registerUser(dto);
 
-        return new ResponseEntity<>(registeredNewUser, HttpStatus.CREATED);
+        return new ResponseEntity<>(registeredUserResponseDTO, HttpStatus.CREATED);
     }
 
 }
