@@ -8,9 +8,10 @@
 
 * **Language:** Java 21
 * **Framework:** Spring Boot 4.x
-* **Database:** PostgreSQL
-* **Security:** Spring Security + JWT (JSON Web Tokens)
-* **Persistence:** Spring Data JPA
+* **Database:** PostgreSQL 15 (Dockerized)
+* **Security:** Spring Security + JWT (Stateless)
+* **Infrastructure:** Docker & Docker Compose
+* **Persistence:** Spring Data JPA + Hibernate
 * **Documentation:** Swagger / OpenAPI (Coming soon)
 
 ---
@@ -22,12 +23,13 @@
 * ✅ **Workspaces:** Task organization grouped by workspaces.
 * ✅ **Security:** Endpoint protection using JWT tokens.
 * ✅ **Validation:** Input data validation on all endpoints.
+* ✅ **Enviroment isolation:** Fully dockerized database and enviroment variable management via ```.env```.
 
 ---
 
 ## 📂 Project Architecture
 
-The project follows a standard **Layered Architecture** to ensure scalability and ease of maintenance:
+The project follows a **Hybrid Layered Architecture** following standard Layered architecture package structure with sub-packaging by feature to maintain high cohesion:
 
 1.  **Controller:** Entry layer that handles HTTP requests.
 2.  **Service:** Business logic and complex validations.
@@ -43,9 +45,16 @@ The project follows a standard **Layered Architecture** to ensure scalability an
 ### Prerequisites
 * JDK 21 or higher
 * Gradle
-* PostgreSQL running locally or via Docker
+* PostgreSQL running locally or via Docker (recommended)
 
 ### Steps to run
 1. **Clone the repository:**
    ```bash
    git clone [https://github.com/your-username/task-management-app.git](https://github.com/your-username/task-management-app.git)
+   ```
+2. **Environment Configuration:**<br>
+   Create a ```.env``` file in the root directory following ```.env.example```.
+3. **Infrastructure Setup:**<br>
+   ```docker-compose up -d```
+4. **Run the application:**<br>
+   ```./gradlew bootRun```
