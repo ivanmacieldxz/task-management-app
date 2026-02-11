@@ -1,5 +1,6 @@
 package org.konge.taskmanagementapp.api.service;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,27 +10,25 @@ import javax.crypto.SecretKey;
 import java.util.Date;
 
 @Service
-public class JWTService {
+public class JwtService {
 
-    private final String SECRET_STRING;
     private final long EXPIRATION_TIME; //24h
+    private final SecretKey SECRET_KEY;
 
-    public JWTService(
+    public JwtService(
             @Value("${app.jwt.secret}") String secretString,
             @Value("${app.jwt.expiration_time}") long expirationTime
     ) {
-        SECRET_STRING = secretString;
         EXPIRATION_TIME = expirationTime;
+        SECRET_KEY = Keys.hmacShaKeyFor(secretString.getBytes());
     }
 
     public String generateToken(String email) {
-        SecretKey secretKey = Keys.hmacShaKeyFor(SECRET_STRING.getBytes());;
-
         return Jwts.builder()
                 .subject(email)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(secretKey)
+                .signWith(SECRET_KEY)
                 .compact();
     }
 }
