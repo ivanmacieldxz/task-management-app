@@ -16,7 +16,7 @@ public class UserService {
     
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
-    private final JWTService jwtService;
+    private final JwtService jwtService;
 
     public UserResponseDTO registerUser(UserRegistrationDTO dto) {
         String registrationUsername = dto.username();
