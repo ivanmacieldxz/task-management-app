@@ -1,8 +1,8 @@
-package org.konge.taskmanagementapp.api.controller.workspaces;
+package org.konge.taskmanagementapp.api.model.workspaces;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.konge.taskmanagementapp.api.model.User;
+import org.konge.taskmanagementapp.api.model.user.User;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
