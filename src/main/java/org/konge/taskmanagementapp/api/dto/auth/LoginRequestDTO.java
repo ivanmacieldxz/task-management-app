@@ -1,4 +1,4 @@
-package org.konge.taskmanagementapp.api.dto;
+package org.konge.taskmanagementapp.api.dto.auth;
 
 public record LoginRequestDTO(
         String identifier,

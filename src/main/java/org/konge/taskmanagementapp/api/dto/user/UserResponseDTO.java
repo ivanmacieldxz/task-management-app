@@ -1,4 +1,4 @@
-package org.konge.taskmanagementapp.api.dto;
+package org.konge.taskmanagementapp.api.dto.user;
 
 public record UserResponseDTO(
     Long id,

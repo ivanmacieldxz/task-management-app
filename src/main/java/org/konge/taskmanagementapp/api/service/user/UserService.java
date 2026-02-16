@@ -1,10 +1,10 @@
 package org.konge.taskmanagementapp.api.service.user;
 
 import lombok.RequiredArgsConstructor;
-import org.konge.taskmanagementapp.api.dto.AuthResponseDTO;
-import org.konge.taskmanagementapp.api.dto.LoginRequestDTO;
-import org.konge.taskmanagementapp.api.dto.UserRegistrationDTO;
-import org.konge.taskmanagementapp.api.dto.UserResponseDTO;
+import org.konge.taskmanagementapp.api.dto.auth.AuthResponseDTO;
+import org.konge.taskmanagementapp.api.dto.auth.LoginRequestDTO;
+import org.konge.taskmanagementapp.api.dto.auth.UserRegistrationDTO;
+import org.konge.taskmanagementapp.api.dto.user.UserResponseDTO;
 import org.konge.taskmanagementapp.api.model.user.User;
 import org.konge.taskmanagementapp.api.repository.user.UserRepository;
 import org.konge.taskmanagementapp.api.service.jwt.JwtService;
