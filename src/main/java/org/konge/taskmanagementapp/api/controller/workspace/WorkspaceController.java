@@ -3,7 +3,7 @@ package org.konge.taskmanagementapp.api.controller.workspace;
 import lombok.RequiredArgsConstructor;
 import org.konge.taskmanagementapp.api.dto.workspace.WorkspaceCreationRequestDTO;
 import org.konge.taskmanagementapp.api.dto.workspace.WorkspaceResponseDTO;
-import org.konge.taskmanagementapp.api.model.workspaces.Workspace;
+import org.konge.taskmanagementapp.api.model.workspace.Workspace;
 import org.konge.taskmanagementapp.api.service.workspace.WorkspaceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

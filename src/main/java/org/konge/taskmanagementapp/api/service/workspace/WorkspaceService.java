@@ -2,7 +2,7 @@ package org.konge.taskmanagementapp.api.service.workspace;
 
 import lombok.RequiredArgsConstructor;
 import org.konge.taskmanagementapp.api.model.user.User;
-import org.konge.taskmanagementapp.api.model.workspaces.Workspace;
+import org.konge.taskmanagementapp.api.model.workspace.Workspace;
 import org.konge.taskmanagementapp.api.repository.user.UserRepository;
 import org.konge.taskmanagementapp.api.repository.workspace.WorkspaceRepository;
 import org.springframework.security.core.context.SecurityContextHolder;

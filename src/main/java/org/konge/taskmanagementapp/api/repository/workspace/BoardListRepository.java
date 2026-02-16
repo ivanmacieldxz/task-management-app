@@ -1,6 +1,6 @@
 package org.konge.taskmanagementapp.api.repository.workspace;
 
-import org.konge.taskmanagementapp.api.model.workspaces.BoardList;
+import org.konge.taskmanagementapp.api.model.workspace.BoardList;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

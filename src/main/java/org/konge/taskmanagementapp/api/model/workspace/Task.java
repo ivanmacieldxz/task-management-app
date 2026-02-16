@@ -1,4 +1,4 @@
-package org.konge.taskmanagementapp.api.model.workspaces;
+package org.konge.taskmanagementapp.api.model.workspace;
 
 import jakarta.persistence.*;
 import lombok.*;

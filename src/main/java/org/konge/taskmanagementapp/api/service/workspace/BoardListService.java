@@ -1,8 +1,8 @@
 package org.konge.taskmanagementapp.api.service.workspace;
 
 import lombok.RequiredArgsConstructor;
-import org.konge.taskmanagementapp.api.model.workspaces.BoardList;
-import org.konge.taskmanagementapp.api.model.workspaces.Workspace;
+import org.konge.taskmanagementapp.api.model.workspace.BoardList;
+import org.konge.taskmanagementapp.api.model.workspace.Workspace;
 import org.konge.taskmanagementapp.api.repository.workspace.BoardListRepository;
 import org.konge.taskmanagementapp.api.repository.workspace.WorkspaceRepository;
 import org.springframework.stereotype.Service;
