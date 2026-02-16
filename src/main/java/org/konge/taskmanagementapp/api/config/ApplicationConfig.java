@@ -1,7 +1,7 @@
 package org.konge.taskmanagementapp.api.config;
 
 import lombok.RequiredArgsConstructor;
-import org.konge.taskmanagementapp.api.repository.UserRepository;
+import org.konge.taskmanagementapp.api.repository.user.UserRepository;
 import org.konge.taskmanagementapp.api.security.SecuredUser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -2,7 +2,7 @@ package org.konge.taskmanagementapp.api.security;
 
 import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
-import org.konge.taskmanagementapp.api.model.User;
+import org.konge.taskmanagementapp.api.model.user.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 

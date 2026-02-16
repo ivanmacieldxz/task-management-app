@@ -1,12 +1,13 @@
-package org.konge.taskmanagementapp.api.service;
+package org.konge.taskmanagementapp.api.service.user;
 
 import lombok.RequiredArgsConstructor;
 import org.konge.taskmanagementapp.api.dto.AuthResponseDTO;
 import org.konge.taskmanagementapp.api.dto.LoginRequestDTO;
 import org.konge.taskmanagementapp.api.dto.UserRegistrationDTO;
 import org.konge.taskmanagementapp.api.dto.UserResponseDTO;
-import org.konge.taskmanagementapp.api.model.User;
-import org.konge.taskmanagementapp.api.repository.UserRepository;
+import org.konge.taskmanagementapp.api.model.user.User;
+import org.konge.taskmanagementapp.api.repository.user.UserRepository;
+import org.konge.taskmanagementapp.api.service.jwt.JwtService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
