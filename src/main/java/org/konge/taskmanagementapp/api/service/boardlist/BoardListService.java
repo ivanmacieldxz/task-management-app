@@ -38,15 +38,20 @@ public class BoardListService {
 
     @Transactional
     public BoardList moveListBetween(Long listId, Double positionPrevList, Double positionNextList) {
-     BoardList list = boardListRepository.findById(listId)
+        BoardList list = boardListRepository.findById(listId)
              .orElseThrow(() -> new RuntimeException("List not found"));
 
-     Long workspaceId = list.getWorkspace().getId();
+        Long workspaceId = list.getWorkspace().getId();
 
-     Double newPosition = arrangeListsAndGetPositionBetween(workspaceId, positionPrevList, positionNextList);
-     list.setPositionInBoard(newPosition);
+        if (boardListRepository.countByWorkspaceId(workspaceId) < 2)
+            throw new RuntimeException("Not enough lists to perform move.");
 
-     return boardListRepository.save(list);
+        Double prevPosition = list.getPositionInBoard();
+
+        Double newPosition = arrangeListsAndGetPositionBetween(workspaceId, prevPosition, positionPrevList, positionNextList);
+        list.setPositionInBoard(newPosition);
+
+        return boardListRepository.save(list);
     }
 
     @Transactional
@@ -93,15 +98,19 @@ public class BoardListService {
      * @param positionNextList next list's position. Should be null when inserting last.
      * @return new list's position.
      */
-    private double arrangeListsAndGetPositionBetween(Long workspaceId, Double positionPrevList, Double positionNextList) {
+    private double arrangeListsAndGetPositionBetween(Long workspaceId, Double prevPosition, Double positionPrevList, Double positionNextList) {
         double newPosition;
 
         if (positionPrevList == null) {
             newPosition = BOARDLIST_TABLE_MIN_POSITION;
-            rearrangeForFirstInsert(workspaceId);
+
+            if (prevPosition != newPosition)
+                rearrangeForFirstInsert(workspaceId);
         } else if (positionNextList == null) {
             newPosition = BOARDLIST_TABLE_MAX_POSITION;
-            rearrangeForLastInsert(workspaceId);
+
+            if (prevPosition != newPosition)
+                rearrangeForFirstInsert(workspaceId);
         } else {
             newPosition = (positionPrevList + positionNextList) / 2;
         }
