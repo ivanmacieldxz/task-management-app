@@ -110,7 +110,7 @@ public class BoardListService {
             newPosition = BOARDLIST_TABLE_MAX_POSITION;
 
             if (prevPosition != newPosition)
-                rearrangeForFirstInsert(workspaceId);
+                rearrangeForLastInsert(workspaceId);
         } else {
             newPosition = (positionPrevList + positionNextList) / 2;
         }
