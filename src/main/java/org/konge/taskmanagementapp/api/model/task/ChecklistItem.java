@@ -1,4 +1,4 @@
-package org.konge.taskmanagementapp.api.model.workspace;
+package org.konge.taskmanagementapp.api.model.task;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

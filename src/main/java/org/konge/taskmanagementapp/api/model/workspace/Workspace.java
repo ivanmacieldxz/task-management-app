@@ -2,6 +2,7 @@ package org.konge.taskmanagementapp.api.model.workspace;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.konge.taskmanagementapp.api.model.boardlist.BoardList;
 import org.konge.taskmanagementapp.api.model.user.User;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
