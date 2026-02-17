@@ -10,12 +10,28 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/workspaces/{workspaceId}/lists")
 @RequiredArgsConstructor
 public class BoardListController {
 
     private final BoardListService boardListService;
+
+    @GetMapping
+    public ResponseEntity<List<BoardListResponseDTO>> getLists(
+            @PathVariable Long workspaceId
+    ) {
+        List<BoardList> lists = boardListService.findAll(workspaceId);
+
+        List<BoardListResponseDTO> responseDTOList = lists
+                .stream()
+                .map(this::mapToResponse)
+                .toList();
+
+        return ResponseEntity.ok(responseDTOList);
+    }
 
     @PostMapping
     public ResponseEntity<BoardListResponseDTO> createList(
@@ -42,6 +58,15 @@ public class BoardListController {
         );
 
         return ResponseEntity.ok(mapToResponse(movedList));
+    }
+
+    @DeleteMapping("/{listId}")
+    public ResponseEntity<String> deleteList(
+            @PathVariable Long listId
+    ) {
+        boardListService.removeList(listId);
+
+        return ResponseEntity.ok("List deleted successfully");
     }
 
     private BoardListResponseDTO mapToResponse(BoardList boardList) {

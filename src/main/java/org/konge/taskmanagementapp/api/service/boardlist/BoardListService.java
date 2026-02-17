@@ -49,6 +49,19 @@ public class BoardListService {
      return boardListRepository.save(list);
     }
 
+    @Transactional
+    public List<BoardList> findAll(Long workspaceId) {
+        return boardListRepository.findByWorkspaceIdOrderByPositionInBoardAsc(workspaceId);
+    }
+
+    @Transactional
+    public void removeList(Long boardListId) {
+        BoardList boardList = boardListRepository.findById(boardListId)
+                .orElseThrow(() -> new RuntimeException("List not found"));
+
+        boardListRepository.delete(boardList);
+    }
+
     /**
      * Returns inserting position for new list and rearranges last list's position if applicable.
      * @param workspaceId list's workspace's id
