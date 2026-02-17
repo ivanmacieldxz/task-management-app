@@ -131,14 +131,14 @@ public class BoardListService {
 
         List<BoardList> boardLists = boardListRepository.findByWorkspaceIdOrderByPositionInBoardAsc(workspaceId);
 
+        BoardList last = boardLists.getLast();
+
         BoardList secondToLast = boardLists.get(
                 boardLists.size() - 2
         );
 
-        BoardList last = boardLists.getLast();
-
         last.setPositionInBoard(
-                (secondToLast.getPositionInBoard() + BOARDLIST_TABLE_MAX_POSITION) / 2
+                secondToLast.getPositionInBoard() / 2 + BOARDLIST_TABLE_MAX_POSITION / 2
         );
 
         boardListRepository.save(last);
