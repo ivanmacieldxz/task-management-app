@@ -2,6 +2,7 @@ package org.konge.taskmanagementapp.api.model.boardlist;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.konge.taskmanagementapp.api.model.common.Positionable;
 import org.konge.taskmanagementapp.api.model.task.Task;
 import org.konge.taskmanagementapp.api.model.workspace.Workspace;
 import org.springframework.data.annotation.CreatedDate;
@@ -19,7 +20,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BoardList {
+public class BoardList implements Positionable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,4 +50,13 @@ public class BoardList {
     private LocalDateTime lastModified;
 
 
+    @Override
+    public Double getPosition() {
+        return getPositionInBoard();
+    }
+
+    @Override
+    public void setPosition(Double position) {
+        setPositionInBoard(position);
+    }
 }
