@@ -5,6 +5,7 @@ import org.konge.taskmanagementapp.api.dto.task.ChecklistItemDTO;
 import org.konge.taskmanagementapp.api.dto.task.TaskRequestDTO;
 import org.konge.taskmanagementapp.api.dto.task.TaskMoveRequestDTO;
 import org.konge.taskmanagementapp.api.dto.task.TaskResponseDTO;
+import org.konge.taskmanagementapp.api.model.task.ChecklistItem;
 import org.konge.taskmanagementapp.api.model.task.Task;
 import org.konge.taskmanagementapp.api.service.task.TaskService;
 import org.springframework.http.HttpStatus;
@@ -86,6 +87,41 @@ public class TaskController {
         return ResponseEntity.ok("Task deleted successfully");
     }
 
+    @PostMapping("/tasks/{taskId}/checklist")
+    public ResponseEntity<TaskResponseDTO> addCheckListItem(
+            @PathVariable Long taskId,
+            @RequestBody ChecklistItemDTO request
+    ) {
+        Task updatedTask = taskService.addChecklistItem(taskId, request.description());
+
+        return ResponseEntity.ok(mapToResponse(updatedTask));
+    }
+
+    @PatchMapping("/tasks/{taskId}/checklist/{index}")
+    public ResponseEntity<TaskResponseDTO> updateChecklistItem(
+            @PathVariable Long taskId,
+            @PathVariable int index,
+            @RequestBody ChecklistItemDTO request
+    ) {
+        Task updatedTask = taskService.updateChecklistItem(
+                taskId,
+                index,
+                request.description(),
+                request.completed()
+        );
+
+        return ResponseEntity.ok(mapToResponse(updatedTask));
+    }
+
+    @DeleteMapping("/tasks/{taskId}/checklist/{index}")
+    public ResponseEntity<TaskResponseDTO> deleteChecklistItem(
+            @PathVariable Long taskId,
+            @PathVariable int index) {
+
+        Task updatedTask = taskService.removeChecklistItem(taskId, index);
+        return ResponseEntity.ok(mapToResponse(updatedTask));
+    }
+
     private TaskResponseDTO mapToResponse(Task task) {
         return TaskResponseDTO.builder()
                 .id(task.getId())
@@ -96,7 +132,18 @@ public class TaskController {
                 .dueDate(task.getDueDate())
                 .createdAt(task.getCreatedAt())
                 .lastModified(task.getLastModified())
+                .checkList(
+                        mapChecklistToResponse(task.getChecklist())
+                )
                 .listId(task.getList().getId())
                 .build();
+    }
+
+    private List<ChecklistItemDTO> mapChecklistToResponse(List<ChecklistItem> list) {
+        return list.stream()
+                .map(checklistItem ->
+                        new ChecklistItemDTO(checklistItem.getDescription(), checklistItem.isCompleted())
+                )
+                .toList();
     }
 }

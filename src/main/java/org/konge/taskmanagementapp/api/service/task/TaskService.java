@@ -98,4 +98,48 @@ public class TaskService {
         return taskRepository.findByListIdOrderByPositionInListAsc(listId);
     }
 
+    @Transactional
+    public Task addChecklistItem(Long taskId, String description) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new RuntimeException("Task not found"));
+
+        task.getChecklist().add(
+                ChecklistItem.builder()
+                        .description(description)
+                        .completed(false)
+                        .build()
+        );
+
+        return taskRepository.save(task);
+    }
+
+    @Transactional
+    public Task updateChecklistItem(Long taskId, int itemIndex, String description, boolean completed) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new RuntimeException("Task not found"));
+
+        if (itemIndex < 0 || itemIndex >= task.getChecklist().size()) {
+            throw new RuntimeException("Checklist item index out of bounds");
+        }
+
+        ChecklistItem item = task.getChecklist().get(itemIndex);
+
+        item.setDescription(description);
+        item.setCompleted(completed);
+
+        return taskRepository.save(task);
+    }
+
+    @Transactional
+    public Task removeChecklistItem(Long taskId, int itemIndex) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new RuntimeException("Task not found"));
+
+        if (itemIndex >= 0 && itemIndex < task.getChecklist().size()) {
+            task.getChecklist().remove(itemIndex);
+        }
+
+        return taskRepository.save(task);
+    }
+
 }
