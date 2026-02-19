@@ -49,7 +49,7 @@ public class Task implements Positionable {
     private LocalDateTime createdAt;
 
     @LastModifiedDate
-    @Column(insertable = false)
+    @Column(nullable = false)
     private LocalDateTime lastModified;
 
     @ElementCollection
