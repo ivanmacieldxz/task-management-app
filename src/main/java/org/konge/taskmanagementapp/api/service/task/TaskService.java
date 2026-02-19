@@ -2,12 +2,12 @@ package org.konge.taskmanagementapp.api.service.task;
 
 import lombok.RequiredArgsConstructor;
 import org.konge.taskmanagementapp.api.model.boardlist.BoardList;
+import org.konge.taskmanagementapp.api.model.task.ChecklistItem;
 import org.konge.taskmanagementapp.api.model.task.Task;
 import org.konge.taskmanagementapp.api.model.task.TaskPriority;
 import org.konge.taskmanagementapp.api.repository.boardlist.BoardListRepository;
 import org.konge.taskmanagementapp.api.repository.task.TaskRepository;
 import org.konge.taskmanagementapp.api.service.common.PositioningService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,11 +66,31 @@ public class TaskService {
         return taskRepository.save(taskToMove);
     }
 
+    @Transactional
     public void deleteTask(Long taskId) {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new RuntimeException("Unable to delete: task doesn't exist"));
 
         taskRepository.delete(task);
+    }
+
+    @Transactional
+    public Task updateTask(
+            Long taskId,
+            String title,
+            String description,
+            TaskPriority priority,
+            LocalDateTime dueDate
+    ) {
+        Task taskToUpdate = taskRepository.findById(taskId)
+                .orElseThrow(() -> new RuntimeException("Unable to update: task not found."));
+
+        taskToUpdate.setTitle(title);
+        taskToUpdate.setDescription(description);
+        taskToUpdate.setPriority(priority);
+        taskToUpdate.setDueDate(dueDate);
+
+        return taskRepository.save(taskToUpdate);
     }
 
     @Transactional(readOnly = true)

@@ -4,7 +4,7 @@ import org.konge.taskmanagementapp.api.model.task.TaskPriority;
 
 import java.time.LocalDateTime;
 
-public record TaskCreationRequestDTO(
+public record TaskRequestDTO(
     String title,
     String description,
     TaskPriority priority,

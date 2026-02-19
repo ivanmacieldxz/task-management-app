@@ -1,7 +1,8 @@
 package org.konge.taskmanagementapp.api.controller.task;
 
 import lombok.RequiredArgsConstructor;
-import org.konge.taskmanagementapp.api.dto.task.TaskCreationRequestDTO;
+import org.konge.taskmanagementapp.api.dto.task.ChecklistItemDTO;
+import org.konge.taskmanagementapp.api.dto.task.TaskRequestDTO;
 import org.konge.taskmanagementapp.api.dto.task.TaskMoveRequestDTO;
 import org.konge.taskmanagementapp.api.dto.task.TaskResponseDTO;
 import org.konge.taskmanagementapp.api.model.task.Task;
@@ -32,7 +33,7 @@ public class TaskController {
     @PostMapping("/lists/{listId}/tasks")
     public ResponseEntity<TaskResponseDTO> createTask(
             @PathVariable Long listId,
-            @RequestBody TaskCreationRequestDTO request
+            @RequestBody TaskRequestDTO request
     ) {
         Task newTask = taskService.createTask(
                 listId,
@@ -45,7 +46,7 @@ public class TaskController {
         return new ResponseEntity<>(mapToResponse(newTask), HttpStatus.CREATED);
     }
 
-    @PatchMapping("/tasks/{taskId}")
+    @PatchMapping("/tasks/{taskId}/move")
     public ResponseEntity<TaskResponseDTO> moveTask(
             @PathVariable Long taskId,
             @RequestBody TaskMoveRequestDTO request
@@ -58,6 +59,22 @@ public class TaskController {
         );
 
         return ResponseEntity.ok(mapToResponse(movedTask));
+    }
+
+    @PatchMapping("/tasks/{taskId}")
+    public ResponseEntity<TaskResponseDTO> updateTask(
+            @PathVariable Long taskId,
+            @RequestBody TaskRequestDTO request
+    ) {
+        Task updatedTask = taskService.updateTask(
+                taskId,
+                request.title(),
+                request.description(),
+                request.priority(),
+                request.dueDate()
+        );
+
+        return ResponseEntity.ok(mapToResponse(updatedTask));
     }
 
     @DeleteMapping("/tasks/{taskId}")
