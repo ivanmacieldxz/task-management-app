@@ -3,20 +3,23 @@ package org.konge.taskmanagementapp.api.model.task;
 import jakarta.persistence.*;
 import lombok.*;
 import org.konge.taskmanagementapp.api.model.boardlist.BoardList;
+import org.konge.taskmanagementapp.api.model.common.Positionable;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Table(name = "task")
+@EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Task {
+public class Task implements Positionable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,4 +59,13 @@ public class Task {
     )
     private List<ChecklistItem> checklist;
 
+    @Override
+    public Double getPosition() {
+        return getPositionInList();
+    }
+
+    @Override
+    public void setPosition(Double position) {
+        setPositionInList(position);
+    }
 }
