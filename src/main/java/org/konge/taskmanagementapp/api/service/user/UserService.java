@@ -1,5 +1,6 @@
 package org.konge.taskmanagementapp.api.service.user;
 
+import io.jsonwebtoken.security.Password;
 import lombok.RequiredArgsConstructor;
 import org.konge.taskmanagementapp.api.dto.auth.AuthResponseDTO;
 import org.konge.taskmanagementapp.api.dto.auth.LoginRequestDTO;
@@ -9,6 +10,7 @@ import org.konge.taskmanagementapp.api.model.user.User;
 import org.konge.taskmanagementapp.api.repository.user.UserRepository;
 import org.konge.taskmanagementapp.api.service.jwt.JwtService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,7 +18,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
     
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
     public UserResponseDTO registerUser(UserRegistrationDTO dto) {
