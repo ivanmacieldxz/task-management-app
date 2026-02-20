@@ -46,7 +46,6 @@ public class Workspace {
     private LocalDateTime createdAt;
 
     @LastModifiedDate
-    @Column(insertable = false)
     private LocalDateTime lastModified;
 
 }

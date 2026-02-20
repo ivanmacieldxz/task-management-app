@@ -1,6 +1,8 @@
 package org.konge.taskmanagementapp.api.controller.workspace;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
+import org.konge.taskmanagementapp.api.dto.workspace.WorkspaceDetailDTO;
 import org.konge.taskmanagementapp.api.dto.workspace.WorkspaceRequestDTO;
 import org.konge.taskmanagementapp.api.dto.workspace.WorkspaceSummaryDTO;
 import org.konge.taskmanagementapp.api.model.workspace.Workspace;
@@ -43,6 +45,27 @@ public class WorkspaceController {
                 .toList();
 
         return ResponseEntity.ok(responses);
+    }
+
+    @GetMapping("/{workspaceId}")
+    public ResponseEntity<WorkspaceDetailDTO> getWorkspace(@PathVariable Long workspaceId) {
+        Workspace workspace = workspaceService.getWorkspaceDetails(workspaceId);
+
+        return ResponseEntity.ok(mappingService.mapWorkspaceToDetailDTO(workspace));
+    }
+
+    @PatchMapping("/{workspaceId}")
+    public ResponseEntity<WorkspaceSummaryDTO> updateWorkspace(@PathVariable Long workspaceId, @RequestBody WorkspaceSummaryDTO request) {
+        Workspace workspace = workspaceService.updateWorkspace(workspaceId, request.name(), request.description());
+
+        return ResponseEntity.ok(mappingService.mapWorkspaceToSummaryDTO(workspace));
+    }
+
+    @DeleteMapping("/{workspaceId}")
+    public ResponseEntity<WorkspaceSummaryDTO> deleteWorkspace(@PathVariable Long workspaceId) {
+        Workspace workspace = workspaceService.deleteWorkspace(workspaceId);
+
+        return ResponseEntity.ok(mappingService.mapWorkspaceToSummaryDTO(workspace));
     }
 
 }

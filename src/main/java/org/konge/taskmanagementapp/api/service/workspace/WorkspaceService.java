@@ -34,6 +34,22 @@ public class WorkspaceService {
         return workspaceRepository.save(workspace);
     }
 
+    @Transactional(readOnly = true)
+    public Workspace getWorkspaceDetails(Long workspaceId) {
+        return workspaceRepository.findById(workspaceId)
+                .orElseThrow(() -> new RuntimeException("Unable to get workspace details: workspace doesn't exist."));
+    }
+
+    @Transactional
+    public Workspace updateWorkspace(Long workspaceId, String name, String description) {
+        Workspace workspace = workspaceRepository.getReferenceById(workspaceId);
+
+        workspace.setName(name);
+        workspace.setDescription(description);
+
+        return workspaceRepository.save(workspace);
+    }
+
     private User getCurrentUser() {
         String userEmail =  SecurityContextHolder.getContext()
                 .getAuthentication()
@@ -43,4 +59,12 @@ public class WorkspaceService {
                 .orElseThrow(() -> new UsernameNotFoundException("No user with email: " + userEmail + " found."));
     }
 
+    public Workspace deleteWorkspace(Long workspaceId) {
+        Workspace workspace = workspaceRepository.findById(workspaceId)
+                .orElseThrow(() -> new RuntimeException("Unable to delete: workspace doesn't exist"));
+
+        workspaceRepository.delete(workspace);
+
+        return workspace;
+    }
 }
