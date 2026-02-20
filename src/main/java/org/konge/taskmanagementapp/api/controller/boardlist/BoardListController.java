@@ -3,9 +3,10 @@ package org.konge.taskmanagementapp.api.controller.boardlist;
 import lombok.RequiredArgsConstructor;
 import org.konge.taskmanagementapp.api.dto.boardlist.BoardListRequestDTO;
 import org.konge.taskmanagementapp.api.dto.boardlist.BoardListMoveRequestDTO;
-import org.konge.taskmanagementapp.api.dto.boardlist.BoardListResponseDTO;
+import org.konge.taskmanagementapp.api.dto.boardlist.BoardListSummaryDTO;
 import org.konge.taskmanagementapp.api.model.boardlist.BoardList;
 import org.konge.taskmanagementapp.api.service.boardlist.BoardListService;
+import org.konge.taskmanagementapp.api.service.common.MappingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,36 +19,37 @@ import java.util.List;
 public class BoardListController {
 
     private final BoardListService boardListService;
+    private final MappingService mappingService;
 
     @GetMapping
-    public ResponseEntity<List<BoardListResponseDTO>> getLists(
+    public ResponseEntity<List<BoardListSummaryDTO>> getLists(
             @PathVariable Long workspaceId
     ) {
         List<BoardList> lists = boardListService.findAll(workspaceId);
 
-        List<BoardListResponseDTO> responseDTOList = lists
+        List<BoardListSummaryDTO> responseDTOList = lists
                 .stream()
-                .map(this::mapToResponse)
+                .map(mappingService::mapBoardListToSummaryDTO)
                 .toList();
 
         return ResponseEntity.ok(responseDTOList);
     }
 
     @PostMapping
-    public ResponseEntity<BoardListResponseDTO> createList(
+    public ResponseEntity<BoardListSummaryDTO> createList(
             @PathVariable Long workspaceId,
             @RequestBody BoardListRequestDTO request
     ) {
         BoardList boardList = boardListService.createList(workspaceId, request.name());
 
         return new ResponseEntity<>(
-                mapToResponse(boardList),
+                mappingService.mapBoardListToSummaryDTO(boardList),
                 HttpStatus.CREATED
         );
     }
 
     @PatchMapping("/{listId}/move")
-    public ResponseEntity<BoardListResponseDTO> moveList(
+    public ResponseEntity<BoardListSummaryDTO> moveList(
             @PathVariable Long listId,
             @RequestBody BoardListMoveRequestDTO boardListMoveRequestDTO
     ) {
@@ -57,17 +59,17 @@ public class BoardListController {
                 boardListMoveRequestDTO.nextListPosition()
         );
 
-        return ResponseEntity.ok(mapToResponse(movedList));
+        return ResponseEntity.ok(mappingService.mapBoardListToSummaryDTO(movedList));
     }
 
     @PatchMapping("/{listId}")
-    public ResponseEntity<BoardListResponseDTO> updateList(
+    public ResponseEntity<BoardListSummaryDTO> updateList(
             @PathVariable Long listId,
             @RequestBody BoardListRequestDTO request
     ) {
         BoardList updated = boardListService.updateList(listId, request.name(), request.description());
 
-        return ResponseEntity.ok(mapToResponse(updated));
+        return ResponseEntity.ok(mappingService.mapBoardListToSummaryDTO(updated));
     }
 
     @DeleteMapping("/{listId}")
@@ -77,15 +79,5 @@ public class BoardListController {
         boardListService.removeList(listId);
 
         return ResponseEntity.ok("List deleted successfully");
-    }
-
-    private BoardListResponseDTO mapToResponse(BoardList boardList) {
-        return BoardListResponseDTO.builder()
-                .id(boardList.getId())
-                .name(boardList.getName())
-                .description(boardList.getDescription())
-                .positionInWorkspace(boardList.getPositionInWorkspace())
-                .workspace(boardList.getWorkspace().getId())
-                .build();
     }
 }

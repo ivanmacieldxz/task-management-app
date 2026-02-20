@@ -1,9 +1,10 @@
 package org.konge.taskmanagementapp.api.controller.workspace;
 
 import lombok.RequiredArgsConstructor;
-import org.konge.taskmanagementapp.api.dto.workspace.WorkspaceCreationRequestDTO;
-import org.konge.taskmanagementapp.api.dto.workspace.WorkspaceResponseDTO;
+import org.konge.taskmanagementapp.api.dto.workspace.WorkspaceRequestDTO;
+import org.konge.taskmanagementapp.api.dto.workspace.WorkspaceSummaryDTO;
 import org.konge.taskmanagementapp.api.model.workspace.Workspace;
+import org.konge.taskmanagementapp.api.service.common.MappingService;
 import org.konge.taskmanagementapp.api.service.workspace.WorkspaceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +18,10 @@ import java.util.List;
 public class WorkspaceController {
 
     private final WorkspaceService workspaceService;
+    private final MappingService mappingService;
 
     @PostMapping
-    public ResponseEntity<WorkspaceResponseDTO> createWorkspace(@RequestBody WorkspaceCreationRequestDTO workspaceCreationRequest) {
+    public ResponseEntity<WorkspaceSummaryDTO> createWorkspace(@RequestBody WorkspaceRequestDTO workspaceCreationRequest) {
         Workspace workspace = Workspace.builder()
                 .name(workspaceCreationRequest.name())
                 .description(workspaceCreationRequest.description())
@@ -28,27 +30,19 @@ public class WorkspaceController {
         Workspace createdWorkspace = workspaceService.createWorkspace(workspace);
 
         return new ResponseEntity<>(
-                mapToResponse(createdWorkspace),
+                mappingService.mapWorkspaceToSummaryDTO(createdWorkspace),
                 HttpStatus.CREATED
         );
     }
 
     @GetMapping
-    public ResponseEntity<List<WorkspaceResponseDTO>> getAllWorkspaces() {
-        List<WorkspaceResponseDTO> responses = workspaceService.findWorkspacesForCurrentUser()
+    public ResponseEntity<List<WorkspaceSummaryDTO>> getAllWorkspaces() {
+        List<WorkspaceSummaryDTO> responses = workspaceService.findWorkspacesForCurrentUser()
                 .stream()
-                .map(this::mapToResponse)
+                .map(mappingService::mapWorkspaceToSummaryDTO)
                 .toList();
 
         return ResponseEntity.ok(responses);
     }
 
-    private WorkspaceResponseDTO mapToResponse(Workspace workspace) {
-        return new WorkspaceResponseDTO(
-                workspace.getId(),
-                workspace.getName(),
-                workspace.getDescription(),
-                workspace.getCreatedAt()
-        );
-    }
 }

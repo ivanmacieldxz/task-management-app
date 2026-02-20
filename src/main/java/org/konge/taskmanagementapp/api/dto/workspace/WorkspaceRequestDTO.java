@@ -1,7 +1,8 @@
 package org.konge.taskmanagementapp.api.dto.workspace;
 
-public record WorkspaceCreationRequestDTO(
+public record WorkspaceRequestDTO(
         String name,
-        String description
+        String description,
+        Long ownerId
 ) { }
 
