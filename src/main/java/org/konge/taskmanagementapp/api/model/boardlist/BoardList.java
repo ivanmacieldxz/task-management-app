@@ -46,7 +46,6 @@ public class BoardList implements Positionable {
     private LocalDateTime createdAt;
 
     @LastModifiedDate
-    @Column(insertable = false)
     private LocalDateTime lastModified;
 
 
