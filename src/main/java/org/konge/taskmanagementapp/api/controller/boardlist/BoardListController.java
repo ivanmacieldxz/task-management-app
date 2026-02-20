@@ -73,7 +73,7 @@ public class BoardListController {
         return BoardListResponseDTO.builder()
                 .id(boardList.getId())
                 .name(boardList.getName())
-                .positionInBoard(boardList.getPositionInBoard())
+                .positionInWorkspace(boardList.getPositionInWorkspace())
                 .workspace(boardList.getWorkspace().getId())
                 .build();
     }

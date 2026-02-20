@@ -6,6 +6,7 @@ import lombok.Builder;
 public record BoardListResponseDTO(
         Long id,
         String name,
-        Double positionInBoard,
+        String description,
+        Double positionInWorkspace,
         Long workspace
 ) { }

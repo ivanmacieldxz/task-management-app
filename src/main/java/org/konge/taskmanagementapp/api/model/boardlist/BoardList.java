@@ -32,7 +32,7 @@ public class BoardList implements Positionable {
     private String description;
 
     @Column(nullable = false)
-    private Double positionInBoard;
+    private Double positionInWorkspace;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "workspace_id", nullable = false)
@@ -52,11 +52,11 @@ public class BoardList implements Positionable {
 
     @Override
     public Double getPosition() {
-        return getPositionInBoard();
+        return getPositionInWorkspace();
     }
 
     @Override
     public void setPosition(Double position) {
-        setPositionInBoard(position);
+        setPositionInWorkspace(position);
     }
 }
