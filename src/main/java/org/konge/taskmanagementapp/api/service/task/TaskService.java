@@ -146,4 +146,9 @@ public class TaskService {
         return taskRepository.save(task);
     }
 
+    @Transactional(readOnly = true)
+    public Task getTask(Long taskId) {
+        return taskRepository.findById(taskId)
+                .orElseThrow(() -> new RuntimeException("Task not found"));
+    }
 }

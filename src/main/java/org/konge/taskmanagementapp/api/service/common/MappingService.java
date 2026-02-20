@@ -2,9 +2,13 @@ package org.konge.taskmanagementapp.api.service.common;
 
 import org.konge.taskmanagementapp.api.dto.boardlist.BoardListDetailDTO;
 import org.konge.taskmanagementapp.api.dto.boardlist.BoardListSummaryDTO;
+import org.konge.taskmanagementapp.api.dto.task.ChecklistItemDTO;
+import org.konge.taskmanagementapp.api.dto.task.TaskResponseDTO;
 import org.konge.taskmanagementapp.api.dto.workspace.WorkspaceDetailDTO;
 import org.konge.taskmanagementapp.api.dto.workspace.WorkspaceSummaryDTO;
 import org.konge.taskmanagementapp.api.model.boardlist.BoardList;
+import org.konge.taskmanagementapp.api.model.task.ChecklistItem;
+import org.konge.taskmanagementapp.api.model.task.Task;
 import org.konge.taskmanagementapp.api.model.workspace.Workspace;
 import org.springframework.stereotype.Service;
 
@@ -55,5 +59,28 @@ public class MappingService {
                 .createdAt(boardList.getCreatedAt())
                 .lastModified(boardList.getLastModified())
                 .build();
+    }
+
+    public TaskResponseDTO mapTaskToDTO(Task task) {
+        return TaskResponseDTO.builder()
+                .id(task.getId())
+                .title(task.getTitle())
+                .description(task.getDescription())
+                .position(task.getPositionInList())
+                .priority(task.getPriority())
+                .dueDate(task.getDueDate())
+                .createdAt(task.getCreatedAt())
+                .lastModified(task.getLastModified())
+                .checkList(
+                        task.getChecklist().stream()
+                                .map(this::mapChecklistItemToDTO)
+                                .toList()
+                )
+                .listId(task.getList().getId())
+                .build();
+    }
+
+    public ChecklistItemDTO mapChecklistItemToDTO(ChecklistItem checklistItem) {
+        return new ChecklistItemDTO(checklistItem.getDescription(), checklistItem.isCompleted());
     }
 }
