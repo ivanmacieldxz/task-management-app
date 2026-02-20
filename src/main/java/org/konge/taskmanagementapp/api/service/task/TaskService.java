@@ -55,6 +55,10 @@ public class TaskService {
 
         List<Task> parentListTasks = taskRepository.findByListIdOrderByPositionInListAsc(targetListId);
 
+        if (parentListTasks.size() < 2) {
+            positioningService.insertLast(parentListTasks, taskToMove, taskRepository::save);
+        }
+
         if (prevPos == null) {
             positioningService.moveFirst(taskToMove, parentListTasks, taskRepository::save);
         } else if (nextPos == null) {
