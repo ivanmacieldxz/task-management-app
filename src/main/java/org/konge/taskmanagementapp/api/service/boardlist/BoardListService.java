@@ -25,7 +25,7 @@ public class BoardListService {
         Workspace workspace = workspaceRepository.findById(workspaceId)
                 .orElseThrow(() -> new RuntimeException("Workspace not found"));
 
-        List<BoardList> workspaceLists = boardListRepository.findByWorkspaceIdOrderByPositionInBoardAsc(workspaceId);
+        List<BoardList> workspaceLists = boardListRepository.findByWorkspaceIdOrderByPositionInWorkspaceAsc(workspaceId);
 
         BoardList newList = BoardList.builder()
                 .name(name)
@@ -47,7 +47,7 @@ public class BoardListService {
         if (boardListRepository.countByWorkspaceId(workspace.getId()) < 2)
             throw new RuntimeException("Not enough lists to perform move.");
 
-        List<BoardList> lists = boardListRepository.findByWorkspaceIdOrderByPositionInBoardAsc(workspace.getId());
+        List<BoardList> lists = boardListRepository.findByWorkspaceIdOrderByPositionInWorkspaceAsc(workspace.getId());
 
         if (positionPrevList == null)
             positioningService.moveFirst(
@@ -88,7 +88,7 @@ public class BoardListService {
 
     @Transactional
     public List<BoardList> findAll(Long workspaceId) {
-        return boardListRepository.findByWorkspaceIdOrderByPositionInBoardAsc(workspaceId);
+        return boardListRepository.findByWorkspaceIdOrderByPositionInWorkspaceAsc(workspaceId);
     }
 
     @Transactional

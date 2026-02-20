@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface BoardListRepository extends JpaRepository<BoardList, Long> {
 
-    List<BoardList> findByWorkspaceIdOrderByPositionInBoardAsc(Long workspaceId);
+    List<BoardList> findByWorkspaceIdOrderByPositionInWorkspaceAsc(Long workspaceId);
 
     long countByWorkspaceId(Long workspaceId);
 }
