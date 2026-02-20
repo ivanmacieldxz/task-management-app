@@ -99,4 +99,9 @@ public class BoardListService {
         boardListRepository.delete(boardList);
     }
 
+    @Transactional(readOnly = true)
+    public BoardList getListDetails(Long listId) {
+        return boardListRepository.findById(listId)
+                .orElseThrow(() -> new RuntimeException("Unable to get details: list doesn't exist."));
+    }
 }

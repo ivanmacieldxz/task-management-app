@@ -1,6 +1,7 @@
 package org.konge.taskmanagementapp.api.controller.boardlist;
 
 import lombok.RequiredArgsConstructor;
+import org.konge.taskmanagementapp.api.dto.boardlist.BoardListDetailDTO;
 import org.konge.taskmanagementapp.api.dto.boardlist.BoardListRequestDTO;
 import org.konge.taskmanagementapp.api.dto.boardlist.BoardListMoveRequestDTO;
 import org.konge.taskmanagementapp.api.dto.boardlist.BoardListSummaryDTO;
@@ -33,6 +34,13 @@ public class BoardListController {
                 .toList();
 
         return ResponseEntity.ok(responseDTOList);
+    }
+
+    @GetMapping("/{listId}")
+    public ResponseEntity<BoardListDetailDTO> getListDetail(@PathVariable Long listId) {
+        BoardList boardList = boardListService.getListDetails(listId);
+
+        return ResponseEntity.ok(mappingService.mapBoardListToDetailDTO(boardList));
     }
 
     @PostMapping

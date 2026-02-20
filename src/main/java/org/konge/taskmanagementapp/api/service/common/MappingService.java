@@ -46,5 +46,14 @@ public class MappingService {
         );
     }
 
-
+    public BoardListDetailDTO mapBoardListToDetailDTO(BoardList boardList) {
+        return BoardListDetailDTO.builder()
+                .id(boardList.getId())
+                .name(boardList.getName())
+                .description(boardList.getDescription())
+                .positionInWorkspace(boardList.getPositionInWorkspace())
+                .createdAt(boardList.getCreatedAt())
+                .lastModified(boardList.getLastModified())
+                .build();
+    }
 }
