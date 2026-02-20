@@ -1,7 +1,7 @@
 package org.konge.taskmanagementapp.api.controller.boardlist;
 
 import lombok.RequiredArgsConstructor;
-import org.konge.taskmanagementapp.api.dto.boardlist.BoardListCreationRequestDTO;
+import org.konge.taskmanagementapp.api.dto.boardlist.BoardListRequestDTO;
 import org.konge.taskmanagementapp.api.dto.boardlist.BoardListMoveRequestDTO;
 import org.konge.taskmanagementapp.api.dto.boardlist.BoardListResponseDTO;
 import org.konge.taskmanagementapp.api.model.boardlist.BoardList;
@@ -36,7 +36,7 @@ public class BoardListController {
     @PostMapping
     public ResponseEntity<BoardListResponseDTO> createList(
             @PathVariable Long workspaceId,
-            @RequestBody BoardListCreationRequestDTO request
+            @RequestBody BoardListRequestDTO request
     ) {
         BoardList boardList = boardListService.createList(workspaceId, request.name());
 
@@ -49,7 +49,7 @@ public class BoardListController {
     @PatchMapping("/{listId}/move")
     public ResponseEntity<BoardListResponseDTO> moveList(
             @PathVariable Long listId,
-            @RequestBody(required = false) BoardListMoveRequestDTO boardListMoveRequestDTO
+            @RequestBody BoardListMoveRequestDTO boardListMoveRequestDTO
     ) {
         BoardList movedList = boardListService.moveListBetween(
                 listId,
@@ -58,6 +58,16 @@ public class BoardListController {
         );
 
         return ResponseEntity.ok(mapToResponse(movedList));
+    }
+
+    @PatchMapping("/{listId}")
+    public ResponseEntity<BoardListResponseDTO> updateList(
+            @PathVariable Long listId,
+            @RequestBody BoardListRequestDTO request
+    ) {
+        BoardList updated = boardListService.updateList(listId, request.name(), request.description());
+
+        return ResponseEntity.ok(mapToResponse(updated));
     }
 
     @DeleteMapping("/{listId}")
@@ -73,6 +83,7 @@ public class BoardListController {
         return BoardListResponseDTO.builder()
                 .id(boardList.getId())
                 .name(boardList.getName())
+                .description(boardList.getDescription())
                 .positionInWorkspace(boardList.getPositionInWorkspace())
                 .workspace(boardList.getWorkspace().getId())
                 .build();

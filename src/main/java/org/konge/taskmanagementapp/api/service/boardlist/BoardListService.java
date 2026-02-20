@@ -72,6 +72,21 @@ public class BoardListService {
     }
 
     @Transactional
+    public BoardList updateList(
+            Long id,
+            String name,
+            String description
+    ) {
+        BoardList toUpdate = boardListRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Updating list failed: list doesn't exist."));
+
+        toUpdate.setName(name);
+        toUpdate.setDescription(description);
+
+        return boardListRepository.save(toUpdate);
+    }
+
+    @Transactional
     public List<BoardList> findAll(Long workspaceId) {
         return boardListRepository.findByWorkspaceIdOrderByPositionInBoardAsc(workspaceId);
     }
