@@ -1,7 +1,8 @@
 package org.konge.taskmanagementapp.api.dto.user;
 
-public record UserResponseDTO(
+public record AuthedUserResponseDTO(
     Long id,
     String username,
-    String email
+    String email,
+    String authToken
 ) { }

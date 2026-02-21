@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.konge.taskmanagementapp.api.dto.auth.AuthResponseDTO;
 import org.konge.taskmanagementapp.api.dto.auth.LoginRequestDTO;
 import org.konge.taskmanagementapp.api.dto.auth.UserRegistrationDTO;
-import org.konge.taskmanagementapp.api.dto.user.UserResponseDTO;
+import org.konge.taskmanagementapp.api.dto.user.AuthedUserResponseDTO;
 import org.konge.taskmanagementapp.api.service.user.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +22,8 @@ public class AuthController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponseDTO> registerUser(@Valid @RequestBody UserRegistrationDTO userRegistrationDTO) {
-        UserResponseDTO registeredUserResponseDTO = userService.registerUser(userRegistrationDTO);
+    public ResponseEntity<AuthedUserResponseDTO> registerUser(@Valid @RequestBody UserRegistrationDTO userRegistrationDTO) {
+        AuthedUserResponseDTO registeredUserResponseDTO = userService.registerUser(userRegistrationDTO);
 
         return new ResponseEntity<>(registeredUserResponseDTO, HttpStatus.CREATED);
     }
