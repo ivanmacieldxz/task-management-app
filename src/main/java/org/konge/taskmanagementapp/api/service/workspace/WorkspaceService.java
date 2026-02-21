@@ -1,6 +1,7 @@
 package org.konge.taskmanagementapp.api.service.workspace;
 
 import lombok.RequiredArgsConstructor;
+import org.konge.taskmanagementapp.api.exception.ResourceNotFoundException;
 import org.konge.taskmanagementapp.api.model.user.User;
 import org.konge.taskmanagementapp.api.model.workspace.Workspace;
 import org.konge.taskmanagementapp.api.repository.user.UserRepository;
@@ -37,7 +38,7 @@ public class WorkspaceService {
     @Transactional(readOnly = true)
     public Workspace getWorkspaceDetails(Long workspaceId) {
         return workspaceRepository.findById(workspaceId)
-                .orElseThrow(() -> new RuntimeException("Unable to get workspace details: workspace doesn't exist."));
+                .orElseThrow(() -> new ResourceNotFoundException("Unable to get workspace details: workspace not found."));
     }
 
     @Transactional
@@ -53,7 +54,7 @@ public class WorkspaceService {
     @Transactional
     public Workspace deleteWorkspace(Long workspaceId) {
         Workspace workspace = workspaceRepository.findById(workspaceId)
-                .orElseThrow(() -> new RuntimeException("Unable to delete: workspace doesn't exist"));
+                .orElseThrow(() -> new ResourceNotFoundException("Unable to delete workspace: workspace not found."));
 
         workspaceRepository.delete(workspace);
 

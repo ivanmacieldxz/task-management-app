@@ -1,6 +1,7 @@
 package org.konge.taskmanagementapp.api.service.boardlist;
 
 import lombok.RequiredArgsConstructor;
+import org.konge.taskmanagementapp.api.exception.ResourceNotFoundException;
 import org.konge.taskmanagementapp.api.model.boardlist.BoardList;
 import org.konge.taskmanagementapp.api.model.workspace.Workspace;
 import org.konge.taskmanagementapp.api.repository.boardlist.BoardListRepository;
@@ -23,7 +24,7 @@ public class BoardListService {
     @Transactional
     public BoardList createList(Long workspaceId, String name) {
         Workspace workspace = workspaceRepository.findById(workspaceId)
-                .orElseThrow(() -> new RuntimeException("Workspace not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Unable to create list: list not found."));
 
         List<BoardList> workspaceLists = boardListRepository.findByWorkspaceIdOrderByPositionInWorkspaceAsc(workspaceId);
 
@@ -40,7 +41,7 @@ public class BoardListService {
     @Transactional
     public BoardList moveListBetween(Long listId, Double positionPrevList, Double positionNextList) {
         BoardList listToMove = boardListRepository.findById(listId)
-             .orElseThrow(() -> new RuntimeException("List not found"));
+             .orElseThrow(() -> new ResourceNotFoundException("Unable to move list: list not found."));
 
         Workspace workspace = listToMove.getWorkspace();
 
@@ -78,7 +79,7 @@ public class BoardListService {
             String description
     ) {
         BoardList toUpdate = boardListRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Updating list failed: list doesn't exist."));
+                .orElseThrow(() -> new ResourceNotFoundException("Updating list failed: list not found."));
 
         toUpdate.setName(name);
         toUpdate.setDescription(description);
@@ -94,7 +95,7 @@ public class BoardListService {
     @Transactional
     public void removeList(Long boardListId) {
         BoardList boardList = boardListRepository.findById(boardListId)
-                .orElseThrow(() -> new RuntimeException("List not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Unable to remove list: list not found."));
 
         boardListRepository.delete(boardList);
     }
@@ -102,6 +103,6 @@ public class BoardListService {
     @Transactional(readOnly = true)
     public BoardList getListDetails(Long listId) {
         return boardListRepository.findById(listId)
-                .orElseThrow(() -> new RuntimeException("Unable to get details: list doesn't exist."));
+                .orElseThrow(() -> new RuntimeException("Unable to get list details: list not found."));
     }
 }

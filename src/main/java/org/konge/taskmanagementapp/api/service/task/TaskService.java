@@ -1,6 +1,7 @@
 package org.konge.taskmanagementapp.api.service.task;
 
 import lombok.RequiredArgsConstructor;
+import org.konge.taskmanagementapp.api.exception.ResourceNotFoundException;
 import org.konge.taskmanagementapp.api.model.boardlist.BoardList;
 import org.konge.taskmanagementapp.api.model.task.ChecklistItem;
 import org.konge.taskmanagementapp.api.model.task.Task;
@@ -25,7 +26,7 @@ public class TaskService {
     @Transactional
     public Task createTask(Long listId, String title, String description, TaskPriority priority, LocalDateTime localDateTime) {
         BoardList list = boardListRepository.findById(listId)
-                .orElseThrow(() -> new RuntimeException("Unable to create task: list not found."));
+                .orElseThrow(() -> new ResourceNotFoundException("Unable to create task: list not found."));
 
         List<Task> parentListTasks = taskRepository.findByListIdOrderByPositionInListAsc(list.getId());
 
@@ -44,11 +45,11 @@ public class TaskService {
     @Transactional
     public Task moveTask(Long taskId, Long targetListId, Double prevPos, Double nextPos) {
         Task taskToMove = taskRepository.findById(taskId)
-                .orElseThrow(() -> new RuntimeException("Unable to move task: task not found."));
+                .orElseThrow(() -> new ResourceNotFoundException("Unable to move task: task not found."));
 
         if (!taskToMove.getList().getId().equals(targetListId)) {
             BoardList targetList = boardListRepository.findById(targetListId)
-                    .orElseThrow(() -> new RuntimeException("Unable to move task: target list not found."));
+                    .orElseThrow(() -> new ResourceNotFoundException("Unable to move task: target list not found."));
 
             taskToMove.setList(targetList);
         }
@@ -73,7 +74,7 @@ public class TaskService {
     @Transactional
     public void deleteTask(Long taskId) {
         Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> new RuntimeException("Unable to delete: task doesn't exist"));
+                .orElseThrow(() -> new ResourceNotFoundException("Unable to delete task: task not found."));
 
         taskRepository.delete(task);
     }
@@ -87,7 +88,7 @@ public class TaskService {
             LocalDateTime dueDate
     ) {
         Task taskToUpdate = taskRepository.findById(taskId)
-                .orElseThrow(() -> new RuntimeException("Unable to update: task not found."));
+                .orElseThrow(() -> new ResourceNotFoundException("Unable to update task: task not found."));
 
         taskToUpdate.setTitle(title);
         taskToUpdate.setDescription(description);
@@ -105,7 +106,7 @@ public class TaskService {
     @Transactional
     public Task addChecklistItem(Long taskId, String description) {
         Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> new RuntimeException("Task not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Unable to add item: task not found"));
 
         task.getChecklist().add(
                 ChecklistItem.builder()
@@ -120,7 +121,7 @@ public class TaskService {
     @Transactional
     public Task updateChecklistItem(Long taskId, int itemIndex, String description, boolean completed) {
         Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> new RuntimeException("Task not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Unable to update item: task not found"));
 
         if (itemIndex < 0 || itemIndex >= task.getChecklist().size()) {
             throw new RuntimeException("Checklist item index out of bounds");
@@ -137,7 +138,7 @@ public class TaskService {
     @Transactional
     public Task removeChecklistItem(Long taskId, int itemIndex) {
         Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> new RuntimeException("Task not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Unable to remove item: task not found"));
 
         if (itemIndex >= 0 && itemIndex < task.getChecklist().size()) {
             task.getChecklist().remove(itemIndex);
@@ -149,6 +150,6 @@ public class TaskService {
     @Transactional(readOnly = true)
     public Task getTask(Long taskId) {
         return taskRepository.findById(taskId)
-                .orElseThrow(() -> new RuntimeException("Task not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Unable to get task: task not found"));
     }
 }
