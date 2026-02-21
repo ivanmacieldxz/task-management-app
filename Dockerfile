@@ -1,5 +1,5 @@
 # Etapa 1: Construcción (Build)
-FROM gradle:8.5-jdk21-alpine AS build
+FROM gradle:9.3.0-jdk21-alpine AS build
 COPY --chown=gradle:gradle . /home/gradle/src
 WORKDIR /home/gradle/src
 # Compilamos el JAR saltando los tests para acelerar el despliegue
