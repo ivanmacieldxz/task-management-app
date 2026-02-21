@@ -1,15 +1,15 @@
 package org.konge.taskmanagementapp.api.service.user;
 
-import io.jsonwebtoken.security.Password;
 import lombok.RequiredArgsConstructor;
 import org.konge.taskmanagementapp.api.dto.auth.AuthResponseDTO;
 import org.konge.taskmanagementapp.api.dto.auth.LoginRequestDTO;
 import org.konge.taskmanagementapp.api.dto.auth.UserRegistrationDTO;
 import org.konge.taskmanagementapp.api.dto.user.UserResponseDTO;
+import org.konge.taskmanagementapp.api.exception.ResourceNotFoundException;
 import org.konge.taskmanagementapp.api.model.user.User;
 import org.konge.taskmanagementapp.api.repository.user.UserRepository;
 import org.konge.taskmanagementapp.api.service.jwt.JwtService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -55,7 +55,7 @@ public class UserService {
         User user = userRepository
                 .findByEmail(loginRequestDTO.identifier())
                 .or(() -> userRepository.findByUsername(loginRequestDTO.identifier()))
-                .orElseThrow(() -> new RuntimeException("Login rejected: user not found."));
+                .orElseThrow(() -> new ResourceNotFoundException("Login rejected: user not found."));
 
         boolean requestPasswordMatchesUserPassword = passwordEncoder
                 .matches(
@@ -69,5 +69,18 @@ public class UserService {
         String token = jwtService.generateToken(user.getEmail());
 
         return new AuthResponseDTO(token);
+    }
+
+    public UserResponseDTO getCurrentUserDetails() {
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new ResourceNotFoundException("Getting user details failed"));
+
+        return new UserResponseDTO(
+                user.getId(),
+                user.getUsername(),
+                user.getEmail()
+        );
     }
 }
