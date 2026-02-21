@@ -27,6 +27,13 @@ public class SecurityConfig {
                         //auth resources and error messages are accessible without authentication
                         .requestMatchers("/api/auth/**", "/error")
                         .permitAll()
+                        .requestMatchers(
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/swagger-resources/**",
+                                "/webjars/**"
+                        ).permitAll()
                         //all other requests require authentication
                         .anyRequest()
                         .authenticated()

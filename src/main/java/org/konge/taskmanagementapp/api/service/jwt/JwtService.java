@@ -1,4 +1,4 @@
-package org.konge.taskmanagementapp.api.service;
+package org.konge.taskmanagementapp.api.service.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

@@ -1,6 +1,6 @@
-package org.konge.taskmanagementapp.api.repository;
+package org.konge.taskmanagementapp.api.repository.user;
 
-import org.konge.taskmanagementapp.api.model.User;
+import org.konge.taskmanagementapp.api.model.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

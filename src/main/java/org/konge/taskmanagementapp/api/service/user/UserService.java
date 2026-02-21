@@ -1,13 +1,17 @@
-package org.konge.taskmanagementapp.api.service;
+package org.konge.taskmanagementapp.api.service.user;
 
 import lombok.RequiredArgsConstructor;
-import org.konge.taskmanagementapp.api.dto.AuthResponseDTO;
-import org.konge.taskmanagementapp.api.dto.LoginRequestDTO;
-import org.konge.taskmanagementapp.api.dto.UserRegistrationDTO;
-import org.konge.taskmanagementapp.api.dto.UserResponseDTO;
-import org.konge.taskmanagementapp.api.model.User;
-import org.konge.taskmanagementapp.api.repository.UserRepository;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.konge.taskmanagementapp.api.dto.auth.AuthResponseDTO;
+import org.konge.taskmanagementapp.api.dto.auth.LoginRequestDTO;
+import org.konge.taskmanagementapp.api.dto.auth.UserRegistrationDTO;
+import org.konge.taskmanagementapp.api.dto.user.AuthedUserResponseDTO;
+import org.konge.taskmanagementapp.api.exception.ResourceNotFoundException;
+import org.konge.taskmanagementapp.api.model.user.User;
+import org.konge.taskmanagementapp.api.model.user.UserDetailsDTO;
+import org.konge.taskmanagementapp.api.repository.user.UserRepository;
+import org.konge.taskmanagementapp.api.service.jwt.JwtService;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,10 +19,10 @@ import org.springframework.stereotype.Service;
 public class UserService {
     
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
-    public UserResponseDTO registerUser(UserRegistrationDTO dto) {
+    public AuthedUserResponseDTO registerUser(UserRegistrationDTO dto) {
         String registrationUsername = dto.username();
         String registrationEmail = dto.email();
 
@@ -41,10 +45,11 @@ public class UserService {
 
         user = userRepository.save(user);
 
-        return new UserResponseDTO(
+        return new AuthedUserResponseDTO(
                 user.getId(),
                 user.getUsername(),
-                user.getEmail()
+                user.getEmail(),
+                jwtService.generateToken(user.getEmail())
         );
     }
 
@@ -52,7 +57,7 @@ public class UserService {
         User user = userRepository
                 .findByEmail(loginRequestDTO.identifier())
                 .or(() -> userRepository.findByUsername(loginRequestDTO.identifier()))
-                .orElseThrow(() -> new RuntimeException("Login rejected: user not found."));
+                .orElseThrow(() -> new ResourceNotFoundException("Login rejected: user not found."));
 
         boolean requestPasswordMatchesUserPassword = passwordEncoder
                 .matches(
@@ -66,5 +71,18 @@ public class UserService {
         String token = jwtService.generateToken(user.getEmail());
 
         return new AuthResponseDTO(token);
+    }
+
+    public UserDetailsDTO getCurrentUserDetails() {
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new ResourceNotFoundException("Getting user details failed"));
+
+        return new UserDetailsDTO(
+                user.getId(),
+                user.getUsername(),
+                user.getEmail()
+        );
     }
 }
