@@ -119,7 +119,7 @@ public class TaskService {
     }
 
     @Transactional
-    public Task updateChecklistItem(Long taskId, int itemIndex, String description, boolean completed) {
+    public Task updateChecklistItem(Long taskId, int itemIndex, String description, Boolean completed) {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new ResourceNotFoundException("Unable to update item: task not found"));
 
@@ -130,7 +130,7 @@ public class TaskService {
         ChecklistItem item = task.getChecklist().get(itemIndex);
 
         item.setDescription(description);
-        item.setCompleted(completed);
+        item.setCompleted(completed != null ? completed : false);
 
         return taskRepository.save(task);
     }
