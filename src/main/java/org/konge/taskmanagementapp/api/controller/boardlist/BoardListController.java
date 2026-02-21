@@ -1,5 +1,6 @@
 package org.konge.taskmanagementapp.api.controller.boardlist;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.konge.taskmanagementapp.api.dto.boardlist.BoardListDetailDTO;
 import org.konge.taskmanagementapp.api.dto.boardlist.BoardListRequestDTO;
@@ -46,7 +47,7 @@ public class BoardListController {
     @PostMapping
     public ResponseEntity<BoardListSummaryDTO> createList(
             @PathVariable Long workspaceId,
-            @RequestBody BoardListRequestDTO request
+            @Valid @RequestBody BoardListRequestDTO request
     ) {
         BoardList boardList = boardListService.createList(workspaceId, request.name());
 
@@ -73,7 +74,7 @@ public class BoardListController {
     @PatchMapping("/{listId}")
     public ResponseEntity<BoardListSummaryDTO> updateList(
             @PathVariable Long listId,
-            @RequestBody BoardListRequestDTO request
+            @Valid @RequestBody BoardListRequestDTO request
     ) {
         BoardList updated = boardListService.updateList(listId, request.name(), request.description());
 

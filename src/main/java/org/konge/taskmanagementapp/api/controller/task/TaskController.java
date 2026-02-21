@@ -1,5 +1,6 @@
 package org.konge.taskmanagementapp.api.controller.task;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.konge.taskmanagementapp.api.dto.task.ChecklistItemDTO;
 import org.konge.taskmanagementapp.api.dto.task.TaskRequestDTO;
@@ -36,7 +37,7 @@ public class TaskController {
     @PostMapping("/lists/{listId}/tasks")
     public ResponseEntity<TaskResponseDTO> createTask(
             @PathVariable Long listId,
-            @RequestBody TaskRequestDTO request
+            @Valid @RequestBody TaskRequestDTO request
     ) {
         Task newTask = taskService.createTask(
                 listId,
@@ -52,7 +53,7 @@ public class TaskController {
     @PatchMapping("/tasks/{taskId}/move")
     public ResponseEntity<TaskResponseDTO> moveTask(
             @PathVariable Long taskId,
-            @RequestBody TaskMoveRequestDTO request
+            @Valid @RequestBody TaskMoveRequestDTO request
     ) {
         Task movedTask = taskService.moveTask(
                 taskId,
@@ -67,7 +68,7 @@ public class TaskController {
     @PatchMapping("/tasks/{taskId}")
     public ResponseEntity<TaskResponseDTO> updateTask(
             @PathVariable Long taskId,
-            @RequestBody TaskRequestDTO request
+            @Valid @RequestBody TaskRequestDTO request
     ) {
         Task updatedTask = taskService.updateTask(
                 taskId,
@@ -94,7 +95,7 @@ public class TaskController {
     @PostMapping("/tasks/{taskId}/checklist")
     public ResponseEntity<TaskResponseDTO> addCheckListItem(
             @PathVariable Long taskId,
-            @RequestBody ChecklistItemDTO request
+            @Valid @RequestBody ChecklistItemDTO request
     ) {
         Task updatedTask = taskService.addChecklistItem(taskId, request.description());
 
@@ -105,7 +106,7 @@ public class TaskController {
     public ResponseEntity<TaskResponseDTO> updateChecklistItem(
             @PathVariable Long taskId,
             @PathVariable int index,
-            @RequestBody ChecklistItemDTO request
+            @Valid @RequestBody ChecklistItemDTO request
     ) {
         Task updatedTask = taskService.updateChecklistItem(
                 taskId,

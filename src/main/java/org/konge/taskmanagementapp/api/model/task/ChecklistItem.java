@@ -12,7 +12,7 @@ import lombok.*;
 @Builder
 public class ChecklistItem {
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
 
     @Column(nullable = false)

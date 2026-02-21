@@ -1,7 +1,7 @@
 package org.konge.taskmanagementapp.api.controller.workspace;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.konge.taskmanagementapp.api.dto.workspace.WorkspaceDetailDTO;
 import org.konge.taskmanagementapp.api.dto.workspace.WorkspaceRequestDTO;
 import org.konge.taskmanagementapp.api.dto.workspace.WorkspaceSummaryDTO;
@@ -23,7 +23,7 @@ public class WorkspaceController {
     private final MappingService mappingService;
 
     @PostMapping
-    public ResponseEntity<WorkspaceSummaryDTO> createWorkspace(@RequestBody WorkspaceRequestDTO workspaceCreationRequest) {
+    public ResponseEntity<WorkspaceSummaryDTO> createWorkspace(@Valid @RequestBody WorkspaceRequestDTO workspaceCreationRequest) {
         Workspace workspace = Workspace.builder()
                 .name(workspaceCreationRequest.name())
                 .description(workspaceCreationRequest.description())
